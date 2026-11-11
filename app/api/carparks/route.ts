@@ -30,7 +30,8 @@ async function getInfo() {
 
 /**
  * Next.js API Route Handler (GET request).
- * Fetches real-time availability, combines it with cached static details, and returns a unified array.
+ * Retrieve static carpark information, live carpark availability, 
+ * combine both data sources, remove duplicate carpark records.
  */
 export async function GET() {
   try {
@@ -39,22 +40,47 @@ export async function GET() {
       fetch(LIVE_URL, { next: { revalidate: 30 } }),
     ]);
     const live = await liveRes.json();
+
+    // Extract the carpark availability records from the first available data snapshot
     const data = live.items[0].carpark_data;
 
-    const carparks: Carpark[] = [];
+    // Create a Map to store carpark records
+    const byId = new Map<string, Carpark>();
+
+    // Loop through every carpark returned by the live API
     for (const d of data) {
-      const location = info.get(d.carpark_number);
-      if (!location) continue;
-      const lots = d.carpark_info[0];
-      carparks.push({
+
+      // Match the live carpark record with its static details using the carpark number as the unique identifier
+      const loc = info.get(d.carpark_number);
+      if (!loc) continue;
+
+      /**
+       * Find the carpark lot info where lot_type is "C".
+       * If no "C" lot type exists, use the first available lot information as a fallback.
+       */
+      const lots =
+        d.carpark_info.find((i: { lot_type: string }) => i.lot_type === "C") ??
+        d.carpark_info[0];
+      if (!lots) continue;
+
+      // Combine the static carpark information and live data into one Carpark object
+      const entry: Carpark = {
         id: d.carpark_number,
-        ...location,
+        ...loc,
         total: +lots.total_lots,
         available: +lots.lots_available,
         updatedAt: d.update_datetime,
-      });
+      };
+
+      // Check whether this carpark already exists
+      const existing = byId.get(entry.id);
+
+      // If the carpark does not exist yet, add it. If it already exists, compare the timestamps.
+      if (!existing || entry.updatedAt > existing.updatedAt) {
+        byId.set(entry.id, entry);
+      }
     }
-    return NextResponse.json(carparks);
+    return NextResponse.json([...byId.values()]);
   } catch {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 502 });
   }
