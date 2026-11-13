@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "SG Carpark Availability",
+  title: "SG Carpark Finder",
   description: "Live HDB carpark availability",
 };
 
