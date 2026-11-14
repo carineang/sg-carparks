@@ -3,7 +3,7 @@
 A real-time web app that helps drivers find nearby HDB carparks in Singapore, with live lot availability shown on an interactive map.
 
 <div style="text-align: center;">
-  <img src="./docs/screenshot.png" width="80%" />
+  <img src="./docs/Screenshot.png" width="80%" />
 </div>
 
 
