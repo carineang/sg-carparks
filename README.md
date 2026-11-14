@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SG Carpark Finder
+
+A real-time web app that helps drivers find nearby HDB carparks in Singapore, with live lot availability shown on an interactive map.
+
+<div style="text-align: center;">
+  <img src="./docs/screenshot.png" width="80%" />
+</div>
+
+
+## Features
+
+- **Live availability:** Lots available and total lots for HDB carparks, refreshed automatically every 60 seconds
+- **Nearby me:** Tap to use your location
+- **Interactive map:** Colour-coded markers (green, amber, red) by occupancy
+- **Radius filter:** 0.5, 1, 2 or 5 km around your location
+- **Responsive layout:** Suitable for viewing on desktop or mobile
+
+On first load, the web app shows carparks within 2 km of the centre of Singapore.
+
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- **Node.js** (v18 or later)
+
+### Installation
+
+#### 1. Clone the Repository
 
 ```bash
+git clone https://github.com/carineang/sg-carparks.git
+cd sg-carparks
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### 2. Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Limitations
 
-## Learn More
+- Covers HDB carparks only. Malls and most private carparks are not in the data.gov.sg dataset.
 
-To learn more about Next.js, take a look at the following resources:
+## Possible Improvements
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Search for carparks based on address
+- Filters for motorcycle and heavy vehicle lots
+- Favourite carparks saved in local storage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Data Sources
 
-## Deploy on Vercel
+- [data.gov.sg](https://data.gov.sg): Carpark Availability and HDB Carpark Information
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
